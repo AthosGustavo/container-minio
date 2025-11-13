@@ -9,9 +9,8 @@ set -e
 IMAGE_NAME="minio-gps-dev"
 CONTAINER_NAME="minio"
 DATA_DIR="$HOME/minio/data"
-
-DIR_LOG="$HOME/minio/var/log"
-LOG_FILE="$DIR_LOG/minio.log"
+LOG_DIR="$HOME/minio/var/log"
+LOG_FILE="$LOG_DIR/minio.log"
 
 mkdir -p "$DATA_DIR" "$LOG_DIR"
 
