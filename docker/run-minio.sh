@@ -43,7 +43,7 @@ else
       -p 9000:9000 \
       -p 9001:9001 \
       -v "$DATA_DIR":/data \
-      -v "$DIR_LOG":/var/log/minio \
+      -v "$LOG_DIR":/var/log/minio \
       $IMAGE_NAME
 fi
 
