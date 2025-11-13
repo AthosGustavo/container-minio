@@ -6,10 +6,13 @@
 
 set -e
 
-IMAGE_NAME="minio-custom"
+IMAGE_NAME="minio-gps-dev"
 CONTAINER_NAME="minio"
-DATA_DIR="$HOME/minio_data"
-DATA_DIR_LOG="$HOME/minio_logs"
+DATA_DIR="$HOME/minio/data"
+LOG_DIR="$HOME/minio/var/log"
+LOG_FILE="$LOG_DIR/minio.log"
+
+mkdir -p "$DATA_DIR" "$LOG_DIR"
 
 
 container_existe() {
@@ -24,8 +27,6 @@ container_rodando() {
 # Garante que a imagem está buildada
 docker build -t $IMAGE_NAME .
 
-# Cria o diretório de dados se não existir
-mkdir -p "$DATA_DIR"
 
 if container_existe; then
     echo "O container já existe."
@@ -41,23 +42,11 @@ else
       -p 9000:9000 \
       -p 9001:9001 \
       -v "$DATA_DIR":/data \
-      -v "$DATA_DIR_LOG":/var/log/minio \
+      -v "$LOG_DIR":/var/log/minio \
       $IMAGE_NAME
 fi
 
 sleep 5
 
-docker exec $CONTAINER_NAME /bin/sh -c "
-  mc alias set local http://localhost:9000 admin admin123 && \
-  mc mb local/public --ignore-existing && \
-  mc anonymous set public local/public && \
-  echo 'Arquivo de teste' > /data/teste-publico.txt && \
-  mc cp /data/teste-publico.txt local/public/
-"
-
-echo
 echo "MinIO ativo"
-echo "http://localhost:9001"
-echo "Bucket público: http://localhost:9000/public/"
-echo "Usuário: admin | Senha: admin123"
 echo "Para ver logs: docker logs -f $CONTAINER_NAME"
