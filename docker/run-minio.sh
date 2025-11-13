@@ -6,11 +6,14 @@
 
 set -e
 
-IMAGE_NAME="minio-gps-prod"
+IMAGE_NAME="minio-gps-dev"
 CONTAINER_NAME="minio"
-DATA_DIR="$HOME/minio_data"
-DATA_DIR_LOG="$HOME/minio_logs"
+DATA_DIR="$HOME/minio/data"
 
+DIR_LOG="$HOME/minio/var/log"
+LOG_FILE="$DIR_LOG/minio.log"
+
+mkdir -p "$DATA_DIR" "$LOG_DIR"
 
 container_existe() {
     docker ps -a --format '{{.Names}}' | grep -wq "$CONTAINER_NAME"
@@ -41,7 +44,7 @@ else
       -p 9000:9000 \
       -p 9001:9001 \
       -v "$DATA_DIR":/data \
-      -v "$DATA_DIR_LOG":/var/log/minio \
+      -v "$DIR_LOG":/var/log/minio \
       $IMAGE_NAME
 fi
 
