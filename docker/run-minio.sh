@@ -6,7 +6,7 @@
 
 set -e
 
-IMAGE_NAME="minio-custom"
+IMAGE_NAME="minio-gps-prod"
 CONTAINER_NAME="minio"
 DATA_DIR="$HOME/minio_data"
 DATA_DIR_LOG="$HOME/minio_logs"
@@ -44,16 +44,6 @@ else
       -v "$DATA_DIR_LOG":/var/log/minio \
       $IMAGE_NAME
 fi
-
-sleep 5
-
-docker exec $CONTAINER_NAME /bin/sh -c "
-  mc alias set local http://localhost:9000 admin admin123 && \
-  mc mb local/public --ignore-existing && \
-  mc anonymous set public local/public && \
-  echo 'Arquivo de teste' > /data/teste-publico.txt && \
-  mc cp /data/teste-publico.txt local/public/
-"
 
 echo
 echo "MinIO ativo"
