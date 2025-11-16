@@ -6,10 +6,11 @@
 
 set -e
 
-IMAGE_NAME="minio-gps-dev"
-CONTAINER_NAME="minio"
-DATA_DIR="$HOME/minio/data"
-LOG_DIR="$HOME/minio/var/log"
+IMAGE_NAME="image-minio-ras-dev"
+CONTAINER_NAME="container-minio-ras-dev"
+APP_DIR="$HOME/minio-dev"
+DATA_DIR="$APP_DIR/data"
+LOG_DIR="$APP_DIR/var/log"
 LOG_FILE="$LOG_DIR/minio.log"
 
 mkdir -p "$DATA_DIR" "$LOG_DIR"
@@ -29,11 +30,10 @@ docker build -t $IMAGE_NAME .
 
 
 if container_existe; then
-    echo "O container já existe."
     if container_rodando; then
-        echo "O container já está em execução."
+        echo "O container já existe e está em execução."
     else
-        echo "Iniciando container "
+        echo "O container já existe e será iniciado."
         docker start "$CONTAINER_NAME"
     fi
 else
