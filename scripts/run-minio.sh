@@ -52,8 +52,7 @@ fi
 
 sleep 5
 
-echo "MinIO ativo"
-echo "Para ver logs: docker logs -f $CONTAINER_NAME"
+echo "MinIO Ambiente Dev ativo"
 
 # Salvar logs em arquivo no host
 docker logs "$CONTAINER_NAME" >> "$LOG_FILE" 2>&1 &
