@@ -37,10 +37,14 @@ if container_existe; then
         docker start "$CONTAINER_NAME"
     fi
 else
+     export $(grep -v '^#' .env | xargs)
+    
     docker run -d \
       --name $CONTAINER_NAME \
       -p 9000:9000 \
       -p 9001:9001 \
+      -e MINIO_ROOT_USER="$MINIO_ROOT_USER" \
+      -e MINIO_ROOT_PASSWORD="$MINIO_ROOT_PASSWORD" \
       -v "$DATA_DIR":/data \
       -v "$LOG_DIR":/var/log/minio \
       $IMAGE_NAME
@@ -48,8 +52,7 @@ fi
 
 sleep 5
 
-echo "MinIO ativo"
-echo "Para ver logs: docker logs -f $CONTAINER_NAME"
+echo "MinIO Ambiente Dev ativo"
 
 # Salvar logs em arquivo no host
 docker logs "$CONTAINER_NAME" >> "$LOG_FILE" 2>&1 &
